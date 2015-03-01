@@ -94,6 +94,7 @@
     app.models.User = BaseModel.extend({
         idAttributemodel: 'username'
     });
+    app.models.BlogEntry = BaseModel.extend({});
 
     var BaseCollection = Backbone.Collection.extend({
 
@@ -141,6 +142,11 @@
             url: data.users
         });
         app.users = new app.collections.Users();
+        app.collections.BlogEntries = BaseCollection.extend({
+            model: app.models.BlogEntry,
+            url: data.blogEntries
+        });
+        app.blogEntries = new app.collections.BlogEntries();
     });
 
 })(jQuery, Backbone, _, app);

@@ -165,6 +165,75 @@
         }
     });
 
+    var BlogView = TemplateView.extend({
+
+        templateName: '#blog-template',
+        events: {
+            'click button.add': 'renderAddForm'
+        },
+
+        initialize: function (options) {
+            var self = this;
+            TemplateView.prototype.initialize.apply(this, arguments);
+            app.collections.ready.done( function () {
+                app.blogEntries.fetch({
+                    success: $.proxy(self.render, self)
+                });
+            });
+        },
+
+        renderAddForm: function (event) {
+            var view = new BlogCreateView(),
+                link = $(event.currentTarget);
+            event.preventDefault();
+            link.before(view.el);
+            link.hide();
+            view.render();
+            view.on('done', function () {
+                link.show();
+            });
+        },
+
+        getContext: function () {
+            entries = app.blogEntries || null;
+            console.log(entries);
+            return {
+                entries: entries
+            };
+        }
+    });
+
+    var BlogCreateView = FormView.extend({
+
+        templateName: '#blog-create-template',
+        className: 'blog-create-entry',
+
+        events: _.extend({
+            'click button.cancel': 'done',
+        }, FormView.prototype.events),
+
+        submit: function (event) {
+            var self = this,
+                attributes = {};
+            FormView.prototype.submit.apply(this, arguments);
+            attributes = this.serializeForm(this.form);
+            app.collections.ready.done( function () {
+                app.blogEntries.create(attributes, {
+                    wait: true,
+                    success: $.proxy(self.success, self),
+                    error: $.proxy(self.modelFailure, self)
+                });
+            });
+        },
+
+        success: function (model) {
+            this.done();
+            window.location.hash = '#blog';
+            this.render();
+        }
+
+    });
+
     var HeaderView = TemplateView.extend({
 
         tagName: 'header',
@@ -259,5 +328,6 @@
     app.views.LoginView = LoginView;
     app.views.HeaderView = HeaderView;
     app.views.SprintView = SprintView;
+    app.views.BlogView = BlogView;
 
 })(jQuery, Backbone, _, app);

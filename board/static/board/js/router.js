@@ -4,7 +4,8 @@
 
         routes: {
             '': 'home',
-            'sprint/:id': 'sprint'
+            'sprint/:id': 'sprint',
+            'blog': 'blog'
         },
 
         initialize: function (options) {
@@ -27,6 +28,13 @@
             var view = new app.views.SprintView({
                 el: this.contentElement,
                 sprintId : id
+            });
+            this.render(view);
+        },
+
+        blog: function () {
+            var view = new app.views.BlogView({
+                el: this.contentElement
             });
             this.render(view);
         },

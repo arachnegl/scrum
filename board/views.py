@@ -2,8 +2,10 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import authentication, permissions, viewsets
 
-from .models import Sprint, Task
-from .serializers import SprintSerializer, TaskSerializer, UserSerializer
+from .models import BlogEntry, Sprint, Task
+from .serializers import (
+    SprintSerializer, TaskSerializer, UserSerializer, BlogEntrySerializer
+)
 
 
 User = get_user_model()
@@ -37,6 +39,12 @@ class TaskViewSet(DefaultsMixin, viewsets.ModelViewSet):
     serializer_class = TaskSerializer
 
 
+class BlogEntryViewSet(DefaultsMixin, viewsets.ModelViewSet):
+
+    queryset = BlogEntry.objects.order_by('created')
+    serializer_class = BlogEntrySerializer
+
+
 class UserViewSet(DefaultsMixin, viewsets.ReadOnlyModelViewSet):
     """ API endpoint for listing users """
 
@@ -44,3 +52,5 @@ class UserViewSet(DefaultsMixin, viewsets.ReadOnlyModelViewSet):
     lookup_url_kwarg = User.USERNAME_FIELD
     queryset = User.objects.order_by(User.USERNAME_FIELD)
     serializer_class = UserSerializer
+
+

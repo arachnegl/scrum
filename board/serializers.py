@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 
-from .models import Sprint, Task
+from .models import Sprint, Task, BlogEntry
 
 User = get_user_model()
 
@@ -88,3 +88,26 @@ class UserSerializer(serializers.ModelSerializer):
                             request=request),
         }
         return link
+
+
+class BlogEntrySerializer(serializers.ModelSerializer):
+
+    links = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BlogEntry
+        fields = (
+            'id', 'title', 'created', 'text', 'links',
+        )
+
+    def get_links(self, obj):
+        request = self.context['request']
+        link = {
+            'self': reverse(
+                'blogentry-detail',
+                kwargs={'pk': obj.pk}, request=request
+            )
+        }
+        return link
+
+

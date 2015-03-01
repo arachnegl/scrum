@@ -42,3 +42,13 @@ class Task(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class BlogEntry(models.Model):
+
+    title = models.CharField(max_length=100)
+    created = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(blank=True, default='')
+
+    def __str__(self):
+        return self.title

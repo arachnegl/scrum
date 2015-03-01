@@ -26,6 +26,7 @@
             <span class="title">Scrum Board Example</span>
             <% if (authenticated) { %>
                 <nav>
+                    <a href="/#blog" class="button">Blog</a>
                     <a href="/" class="button">Your Sprints</a>
                     <a href="#" class="logout button">Logout</a>
                 </nav>
@@ -47,6 +48,42 @@
                 </div>
             <% } else { %>
                 <h3 class="loading">Loading...</h3>
+            <% } %>
+        </script>
+
+        <script type="text/html" id="blog-template">
+            <h1>Blog</h1>
+            <p>Entries</p>
+            <button class="add" type="submit">Add Entry</button>
+            <% if (entries !== null) {  %>
+                <div class="entries">
+                    <% _.each(entries.models, function (item) { %>
+                        <h2> <%= item.get('title') %> </h2>
+                        <p> <%= item.get('text') %> </p>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <h3 class="loading">Loading...</h3>
+            <% } %>
+        </script>
+
+        <script type="text/html" id="blog-create-template">
+            <h1>Create New Entry</h1>
+            <form action="" method="post">
+                <label for="id_title">Title</label>
+                <input id="id_title" type="text" name="title" maxlength="100" required />
+                <label for="id_entry">Text</label>
+                <input id="id_entry" type="textarea" name="text">
+                <button class="cancel">Cancel</button>
+                <button type="submit">Create</button>
+            </form>
+        </script>
+
+        <script type="text/html" id="status-template">
+            <h4><%- title %></h4>
+            <div class="list"></div>
+            <% if (sprint === null) { %>
+                <button class=add" type="submit">Add Task</button>
             <% } %>
         </script>
 

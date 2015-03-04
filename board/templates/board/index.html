@@ -59,6 +59,7 @@
                 <div class="entries">
                     <% _.each(entries.models, function (item) { %>
                         <h2> <%= item.get('title') %> </h2>
+                        <p>Published: <%= item.get('created') %> </p>
                         <p> <%= item.get('text') %> </p>
                     <% }); %>
                 </div>
